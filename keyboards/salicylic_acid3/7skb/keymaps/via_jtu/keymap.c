@@ -14,19 +14,53 @@ enum layer_number {
 
 
 void proc_regist_keycode(keyrecord_t *record, bool lshift, bool rshift, bool is_clear_shift, uint16_t regist_keycode, bool is_shift){
+
+//   bool is_cleared_shift = false;
+//   if(is_clear_shift & !is_shift){
+//       if (lshift) unregister_code(KC_LSFT);
+//       if (rshift) unregister_code(KC_RSFT);
+//       is_cleared_shift = true;
+//   }
+
+//   bool is_set_shift = false;
+//   if(!is_clear_shift & is_shift){
+//     register_code(KC_LSFT);
+//     is_set_shift = true;
+//   }
+
+//   if (record->event.pressed) {
+//     register_code(regist_keycode);
+//   }else{
+//     unregister_code(regist_keycode);
+
+//     if(is_set_shift)unregister_code(KC_LSFT);
+
+//     if(is_cleared_shift){
+//       if (lshift) register_code(KC_LSFT);
+//       if (rshift) register_code(KC_RSFT);
+//     }
+//   }
+
+
+
+  if(is_clear_shift){
+      if (lshift) unregister_code(KC_LSFT);
+      if (rshift) unregister_code(KC_RSFT);
+  }
+  if(is_shift){
+    register_code(KC_LSFT);
+  }
+
   if (record->event.pressed) {
-    if(is_clear_shift){
-        if (lshift) unregister_code(KC_LSFT);
-        if (rshift) unregister_code(KC_RSFT);
-    }
-    if(is_shift)register_code(KC_LSFT);
     register_code(regist_keycode);
     unregister_code(regist_keycode);
-    if(is_shift)unregister_code(KC_LSFT);
-    if(is_clear_shift){
-        if (lshift) register_code(KC_LSFT);
-        if (rshift) register_code(KC_RSFT);
-    }
+  }
+
+  if(is_shift)unregister_code(KC_LSFT);
+
+  if(is_clear_shift){
+      if (lshift) register_code(KC_LSFT);
+      if (rshift) register_code(KC_RSFT);
   }
 }
 
@@ -167,7 +201,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         proc_regist_keycode(record, lshift, rshift, false, KC_SCLN, true);
         return false;
     case KC_LCBR:
-        proc_regist_keycode(record, lshift, rshift, false, KC_LSFT, true);
+        proc_regist_keycode(record, lshift, rshift, false, KC_RBRC, true);
         return false;
     case KC_RCBR:
         proc_regist_keycode(record, lshift, rshift, false, KC_NUHS, true);
