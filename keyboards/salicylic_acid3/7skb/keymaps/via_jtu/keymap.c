@@ -13,18 +13,20 @@ enum layer_number {
   // 以下追加
 
 
-void proc_regist_keycode(bool lshift, bool rshift, bool is_clear_shift, uint16_t regist_keycode, bool is_shift){
-  if(is_clear_shift){
-    if (lshift) unregister_code(KC_LSFT);
-    if (rshift) unregister_code(KC_RSFT);
-  }
-  if(is_shift)register_code(KC_LSFT);
-  register_code(regist_keycode);
-  unregister_code(regist_keycode);
-  if(is_shift)unregister_code(KC_LSFT);
-  if(is_clear_shift){
-    if (lshift) register_code(KC_LSFT);
-    if (rshift) register_code(KC_RSFT);
+void proc_regist_keycode(keyrecord_t *record, bool lshift, bool rshift, bool is_clear_shift, uint16_t regist_keycode, bool is_shift){
+  if (record->event.pressed) {
+    if(is_clear_shift){
+        if (lshift) unregister_code(KC_LSFT);
+        if (rshift) unregister_code(KC_RSFT);
+    }
+    if(is_shift)register_code(KC_LSFT);
+    register_code(regist_keycode);
+    unregister_code(regist_keycode);
+    if(is_shift)unregister_code(KC_LSFT);
+    if(is_clear_shift){
+        if (lshift) register_code(KC_LSFT);
+        if (rshift) register_code(KC_RSFT);
+    }
   }
 }
 
@@ -37,206 +39,148 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   switch (keycode) {
     case KC_2:
-      if (record->event.pressed) {
         if (lshift || rshift) {
-          proc_regist_keycode(lshift, rshift, true, KC_LBRC, false);
+            proc_regist_keycode(record, lshift, rshift, true, KC_LBRC, false);
         } else {
-          proc_regist_keycode(lshift, rshift, false, KC_2, false);
+            proc_regist_keycode(record, lshift, rshift, false, KC_2, false);
         }
-      }
-      return false;
+        return false;
     case KC_6:
-      if (record->event.pressed) {
         if (lshift || rshift) {
-          proc_regist_keycode(lshift, rshift, true, KC_EQL, false);
+          proc_regist_keycode(record, lshift, rshift, true, KC_EQL, false);
         } else {
-          proc_regist_keycode(lshift, rshift, false, KC_6, false);
+          proc_regist_keycode(record, lshift, rshift, false, KC_6, false);
         }
-      }
-      return false;
+        return false;
     case KC_7:
-      if (record->event.pressed) {
         if (lshift || rshift) {
-          proc_regist_keycode(lshift, rshift, true, KC_6, true);
+          proc_regist_keycode(record, lshift, rshift, true, KC_6, true);
         } else {
-          proc_regist_keycode(lshift, rshift, false, KC_7, false);
+          proc_regist_keycode(record, lshift, rshift, false, KC_7, false);
         }
-      }
-      return false;
+        return false;
     case KC_8:
-      if (record->event.pressed) {
         if (lshift || rshift) {
-          proc_regist_keycode(lshift, rshift, true, KC_QUOT, true);
+          proc_regist_keycode(record, lshift, rshift, true, KC_QUOT, true);
         } else {
-          proc_regist_keycode(lshift, rshift, false, KC_8, false);
+          proc_regist_keycode(record, lshift, rshift, false, KC_8, false);
         }
-      }
-      return false;
+        return false;
     case KC_9:
-      if (record->event.pressed) {
         if (lshift || rshift) {
-          proc_regist_keycode(lshift, rshift, true, KC_8, true);
+          proc_regist_keycode(record, lshift, rshift, true, KC_8, true);
         } else {
-          proc_regist_keycode(lshift, rshift, false, KC_9, false);
+          proc_regist_keycode(record, lshift, rshift, false, KC_9, false);
         }
-      }
-      return false;
+        return false;
     case KC_0:
-      if (record->event.pressed) {
         if (lshift || rshift) {
-          proc_regist_keycode(lshift, rshift, true, KC_9, true);
+          proc_regist_keycode(record, lshift, rshift, true, KC_9, true);
         } else {
-          proc_regist_keycode(lshift, rshift, false, KC_0, false);
+          proc_regist_keycode(record, lshift, rshift, false, KC_0, false);
         }
-      }
-      return false;
+        return false;
     case KC_MINS:
-      if (record->event.pressed) {
         if (lshift || rshift) {
-          proc_regist_keycode(lshift, rshift, true, KC_INT1, true);
+          proc_regist_keycode(record, lshift, rshift, true, KC_INT1, true);
         } else {
-          proc_regist_keycode(lshift, rshift, false, KC_MINS, false);
+          proc_regist_keycode(record, lshift, rshift, false, KC_MINS, false);
         }
-      }
-      return false;
+        return false;
     case KC_EQL:
-      if (record->event.pressed) {
         if (lshift || rshift) {
-          proc_regist_keycode(lshift, rshift, true, KC_SCLN, true);
+          proc_regist_keycode(record, lshift, rshift, true, KC_SCLN, true);
         } else {
-          proc_regist_keycode(lshift, rshift, false, KC_MINS, true);
+          proc_regist_keycode(record, lshift, rshift, false, KC_MINS, true);
         }
-      }
-      return false;
+        return false;
     case KC_LBRC:
-      if (record->event.pressed) {
         if (lshift || rshift) {
-          proc_regist_keycode(lshift, rshift, true, KC_RBRC, true);
+          proc_regist_keycode(record, lshift, rshift, true, KC_RBRC, true);
         } else {
-          proc_regist_keycode(lshift, rshift, false, KC_RBRC, false);
+          proc_regist_keycode(record, lshift, rshift, false, KC_RBRC, false);
         }
-      }
-      return false;
+        return false;
     case KC_RBRC:
-      if (record->event.pressed) {
         if (lshift || rshift) {
-          proc_regist_keycode(lshift, rshift, true, KC_NUHS, true);
+          proc_regist_keycode(record, lshift, rshift, true, KC_NUHS, true);
         } else {
-          proc_regist_keycode(lshift, rshift, false, KC_NUHS, false);
+          proc_regist_keycode(record, lshift, rshift, false, KC_NUHS, false);
         }
-      }
-      return false;
+        return false;
     case KC_BSLS:
-      if (record->event.pressed) {
         if (lshift || rshift) {
-          proc_regist_keycode(lshift, rshift, true, KC_INT3, true);
+          proc_regist_keycode(record, lshift, rshift, true, KC_INT3, true);
         } else {
-          proc_regist_keycode(lshift, rshift, false, KC_INT1, false);
+          proc_regist_keycode(record, lshift, rshift, false, KC_INT1, false);
         }
-      }
-      return false;
+        return false;
     case KC_SCLN:
-      if (record->event.pressed) {
         if (lshift || rshift) {
-          proc_regist_keycode(lshift, rshift, true, KC_QUOT, false);
+          proc_regist_keycode(record, lshift, rshift, true, KC_QUOT, false);
         } else {
-          proc_regist_keycode(lshift, rshift, false, KC_SCLN, false);
+          proc_regist_keycode(record, lshift, rshift, false, KC_SCLN, false);
         }
-      }
-      return false;
+        return false;
     case KC_QUOT:
-      if (record->event.pressed) {
         if (lshift || rshift) {
-          proc_regist_keycode(lshift, rshift, true, KC_2, true);
+          proc_regist_keycode(record, lshift, rshift, true, KC_2, true);
         } else {
-          proc_regist_keycode(lshift, rshift, false, KC_7, true);
+          proc_regist_keycode(record, lshift, rshift, false, KC_7, true);
         }
-      }
-      return false;
+        return false;
     case KC_GRV:
-      if (record->event.pressed) {
         if (lshift || rshift) {
-          proc_regist_keycode(lshift, rshift, true, KC_EQL, true);
+          proc_regist_keycode(record, lshift, rshift, true, KC_EQL, true);
         } else {
-          proc_regist_keycode(lshift, rshift, false, KC_LBRC, true);
+          proc_regist_keycode(record, lshift, rshift, false, KC_LBRC, true);
         }
-      }
-      return false;
+        return false;
     case KC_CAPS:
-      if (record->event.pressed) {
-          proc_regist_keycode(lshift, rshift, false, KC_CAPS, true);
-      }
-      return false;
+        proc_regist_keycode(record, lshift, rshift, false, KC_CAPS, true);
+        return false;
     case KC_TILD:
-      if (record->event.pressed) {
-        proc_regist_keycode(lshift, rshift, false, KC_EQL, true);
-      }
-      return false;
+        proc_regist_keycode(record, lshift, rshift, false, KC_EQL, true);
+        return false;
     case KC_AT:
-      if (record->event.pressed) {
-        proc_regist_keycode(lshift, rshift, false, KC_LBRC, false);
-      }
-      return false;
+        proc_regist_keycode(record, lshift, rshift, false, KC_LBRC, false);
+        return false;
     case KC_CIRC:
-      if (record->event.pressed) {
-        proc_regist_keycode(lshift, rshift, false, KC_EQL, false);
-      }
-      return false;
+        proc_regist_keycode(record, lshift, rshift, false, KC_EQL, false);
+        return false;
     case KC_AMPR:
-      if (record->event.pressed) {
-        proc_regist_keycode(lshift, rshift, false, KC_6, true);
-      }
-      return false;
+        proc_regist_keycode(record, lshift, rshift, false, KC_6, true);
+        return false;
     case KC_ASTR:
-      if (record->event.pressed) {
-        proc_regist_keycode(lshift, rshift, false, KC_QUOT, true);
-      }
-      return false;
+        proc_regist_keycode(record, lshift, rshift, false, KC_QUOT, true);
+        return false;
     case KC_LPRN:
-      if (record->event.pressed) {
-        proc_regist_keycode(lshift, rshift, false, KC_8, true);
-      }
-      return false;
+        proc_regist_keycode(record, lshift, rshift, false, KC_8, true);
+        return false;
     case KC_RPRN:
-      if (record->event.pressed) {
-        proc_regist_keycode(lshift, rshift, false, KC_9, true);
-      }
-      return false;
+        proc_regist_keycode(record, lshift, rshift, false, KC_9, true);
+        return false;
     case KC_UNDS:
-      if (record->event.pressed) {
-        proc_regist_keycode(lshift, rshift, false, KC_INT1, true);
-      }
-      return false;
+        proc_regist_keycode(record, lshift, rshift, false, KC_INT1, true);
+        return false;
     case KC_PLUS:
-      if (record->event.pressed) {
-        proc_regist_keycode(lshift, rshift, false, KC_SCLN, true);
-      }
-      return false;
+        proc_regist_keycode(record, lshift, rshift, false, KC_SCLN, true);
+        return false;
     case KC_LCBR:
-      if (record->event.pressed) {
-        proc_regist_keycode(lshift, rshift, false, KC_LSFT, true);
-      }
-      return false;
+        proc_regist_keycode(record, lshift, rshift, false, KC_LSFT, true);
+        return false;
     case KC_RCBR:
-      if (record->event.pressed) {
-        proc_regist_keycode(lshift, rshift, false, KC_NUHS, true);
-      }
-      return false;
+        proc_regist_keycode(record, lshift, rshift, false, KC_NUHS, true);
+        return false;
     case KC_PIPE:
-      if (record->event.pressed) {
-        proc_regist_keycode(lshift, rshift, false, KC_INT3, true);
-      }
-      return false;
+        proc_regist_keycode(record, lshift, rshift, false, KC_INT3, true);
+        return false;
     case KC_COLN:
-      if (record->event.pressed) {
-        proc_regist_keycode(lshift, rshift, false, KC_QUOT, false);
-      }
-      return false;
+        proc_regist_keycode(record, lshift, rshift, false, KC_QUOT, false);
+        return false;
     case KC_DQUO:
-      if (record->event.pressed) {
-        proc_regist_keycode(lshift, rshift, false, KC_2, true);
-      }
-      return false;
+        proc_regist_keycode(record, lshift, rshift, false, KC_2, true);
+        return false;
   }
   return true;
 }
