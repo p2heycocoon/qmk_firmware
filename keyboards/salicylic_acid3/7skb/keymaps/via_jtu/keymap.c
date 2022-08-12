@@ -42,13 +42,17 @@ void proc_regist_keycode(keyrecord_t *record, bool lshift, bool rshift, bool is_
 //   }
 
 
-
-  if(is_clear_shift){
+  bool is_cleared = false;
+  if(is_clear_shift & !is_shift){
       if (lshift) unregister_code(KC_LSFT);
       if (rshift) unregister_code(KC_RSFT);
+      is_cleared = true;
   }
-  if(is_shift){
+
+  bool is_shifted = false;
+  if(!is_clear_shift & is_shift){
     register_code(KC_LSFT);
+    is_shifted = true;
   }
 
   if (record->event.pressed) {
@@ -56,9 +60,9 @@ void proc_regist_keycode(keyrecord_t *record, bool lshift, bool rshift, bool is_
     unregister_code(regist_keycode);
   }
 
-  if(is_shift)unregister_code(KC_LSFT);
+  if(is_shifted)unregister_code(KC_LSFT);
 
-  if(is_clear_shift){
+  if(is_cleared){
       if (lshift) register_code(KC_LSFT);
       if (rshift) register_code(KC_RSFT);
   }
