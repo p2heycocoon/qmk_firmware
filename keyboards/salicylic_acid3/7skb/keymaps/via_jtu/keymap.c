@@ -10,76 +10,113 @@ enum layer_number {
   _L3,
 };
 
-  // 以下追加
+// 以下追加
+static bool gs_lshift = false;
+static bool gs_rshift = false;
 
-
-//void proc_regist_keycode(keyrecord_t *record, bool lshift, bool rshift, bool is_clear_shift, uint16_t regist_keycode, bool is_shift){
 void proc_regist_keycode(keyrecord_t *record, uint16_t regist_keycode_ifshift, bool is_shift_ifshift, uint16_t regist_keycode, bool is_shift){
 
-//   bool is_cleared_shift = false;
-//   if(is_clear_shift & !is_shift){
-//       if (lshift) unregister_code(KC_LSFT);
-//       if (rshift) unregister_code(KC_RSFT);
-//       is_cleared_shift = true;
-//   }
 
-//   bool is_set_shift = false;
-//   if(!is_clear_shift & is_shift){
-//     register_code(KC_LSFT);
-//     is_set_shift = true;
-//   }
+  bool shift_now = gs_lshift || gs_rshift;
 
-//   if (record->event.pressed) {
-//     register_code(regist_keycode);
-//   }else{
-//     unregister_code(regist_keycode);
+//   if(shift_now){
 
-//     if(is_set_shift)unregister_code(KC_LSFT);
-
-//     if(is_cleared_shift){
-//       if (lshift) register_code(KC_LSFT);
-//       if (rshift) register_code(KC_RSFT);
+//     if(!is_shift_ifshift){
+//         if (gs_lshift) unregister_code(KC_LSFT);
+//         if (gs_rshift) unregister_code(KC_RSFT);
 //     }
+
+//     if (record->event.pressed) {
+//         register_code(regist_keycode_ifshift);
+//         unregister_code(regist_keycode_ifshift);
+//     }
+
+//     if(!is_shift_ifshift){
+//         if (gs_lshift) register_code(KC_LSFT);
+//         if (gs_rshift) register_code(KC_RSFT);
+//     }
+
+//   }else{
+
+//     if(is_shift)register_code(KC_LSFT);
+
+//     if (record->event.pressed) {
+//         register_code(regist_keycode);
+//         unregister_code(regist_keycode);
+//     }
+
+//     if(is_shift)unregister_code(KC_LSFT);
 //   }
 
-  bool lshift = keyboard_report->mods & MOD_BIT(KC_LSFT);
-  bool rshift = keyboard_report->mods & MOD_BIT(KC_RSFT);
-  bool shift_now = lshift || rshift;
+  if (record->event.pressed) {
+    //キーを押した場合
 
-  if(shift_now){
+    if(shift_now){
+        //今シフトが押されている場合
 
-    if(!is_shift_ifshift){
-        if (lshift) unregister_code(KC_LSFT);
-        if (rshift) unregister_code(KC_RSFT);
-    }
+        if(!is_shift_ifshift){
+            //変換先キーがシフト無しの場合、シフトを解除する
+            if (gs_lshift) unregister_code(KC_LSFT);
+            if (gs_rshift) unregister_code(KC_RSFT);
+        }
 
-    if (record->event.pressed) {
+        //変換先キー押下
         register_code(regist_keycode_ifshift);
-        unregister_code(regist_keycode_ifshift);
-    }
+    }else{
+        //今シフトが押されていない場合
 
-    if(!is_shift_ifshift){
-        if (lshift) register_code(KC_LSFT);
-        if (rshift) register_code(KC_RSFT);
-    }
+        //変換先キーがシフトありの場合、シフトを押下する
+        if(is_shift)register_code(KC_LSFT);
 
-  }else{
-
-    if(is_shift)register_code(KC_LSFT);
-
-    if (record->event.pressed) {
+        //変換先キー押下
         register_code(regist_keycode);
-        unregister_code(regist_keycode);
     }
+  }else{
+    //キーを放した場合
 
-    if(is_shift)unregister_code(KC_LSFT);
+    if(shift_now){
+        //今シフトが押されている場合
+
+        if(!is_shift_ifshift){
+            //変換先キーがシフト無しの場合、シフトを解除する
+            if (gs_lshift) unregister_code(KC_LSFT);
+            if (gs_rshift) unregister_code(KC_RSFT);
+        }
+
+        //変換先キーを放す
+        unregister_code(regist_keycode_ifshift);
+
+        if(!is_shift_ifshift){
+            //シフトの状態を戻す
+            if (gs_lshift) register_code(KC_LSFT);
+            if (gs_rshift) register_code(KC_RSFT);
+        }
+    }else{
+        //今シフトが押されていない場合
+
+        //変換先キーがシフトありの場合、シフトを押下する
+        if(is_shift)register_code(KC_LSFT);
+
+        //変換先キーを放す
+        unregister_code(regist_keycode);
+
+        //シフトの状態を戻す
+        if(is_shift)unregister_code(KC_LSFT);
+    }
   }
 }
 
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-
   switch (keycode) {
+    case KC_LSFT:
+        if (record->event.pressed) gs_lshift = true;
+        else gs_lshift = false;
+        return true;
+    case KC_RSFT:
+        if (record->event.pressed) gs_rshift = true;
+        else gs_rshift = false;
+        return true;
     case KC_2:
         proc_regist_keycode(record, KC_LBRC, false, KC_2, false);
         return false;
