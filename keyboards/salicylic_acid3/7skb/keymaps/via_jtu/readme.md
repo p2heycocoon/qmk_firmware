@@ -1,3 +1,3 @@
 # The via keymap for 7sKB
 
-The basic keymap with full support for VIA Configurator
+7sKBのキーマップ via をベースに、JIS配列設定のPCで使用できるように変換処理を追加したものです。
